@@ -45,17 +45,38 @@ public class Board : MonoBehaviour
     //  - Changes the GameObject transform position Gameobject.transform.position += new Vector3(0, -1, 0).
     public static void DecreaseRow(int y)
     {
+        for (int i = 0; i < w; i++)
+        {
+            if (grid[i, y] != null)
+            {
+                grid[i, y - 1] = grid[i, y];
+                grid[i, y] = null;
+                grid[i, y - 1].transform.position += new Vector3(0, -1, 0);
+            }
+        }
     }
 
     // TODO: Decreases all rows above Y
     public static void DecreaseRowsAbove(int y)
     {
+        for (int i = y; i < h; i++)
+        { 
+            DecreaseRow(i);
+        }
     }
 
     // TODO: Return true if all cells in a row have a GameObject (are not null), false otherwise
     public static bool IsRowFull(int y)
     {
-        return true;
+        Boolean isFull = true;
+        for (int i = 0; i < w; i++)
+        {
+            if (grid[i, y] == null)
+            {
+                return false;
+            }
+        }
+        return isFull;
     }
 
     // Deletes full rows

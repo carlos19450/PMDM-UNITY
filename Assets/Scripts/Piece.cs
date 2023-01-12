@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ public class Piece : MonoBehaviour
         {
             // Modify position
             transform.position += new Vector3(-1, 0, 0);
-
+            Console.WriteLine("Tecla izquierda pulsada");
             // See if it's valid
             if (IsValidBoard())
 				// It's valid. Update grid.
@@ -37,21 +38,7 @@ public class Piece : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             // Modify position
-            transform.position += new Vector3(-1, 0, 0);
-
-            // See if it's valid
-            if (IsValidBoard())
-				// It's valid. Update grid.
-				UpdateBoard();
-            else
-                // Its not valid. revert.
-                transform.position += new Vector3(1, 0, 0);
-        }
-        // Implement Rotate, rotates the piece 90 degrees (Key UpArrow)
-        /*if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            // Modify position
-            transform.rotation += new Vector3(0, 0, 90);
+            transform.position += new Vector3(1, 0, 0);
 
             // See if it's valid
             if (IsValidBoard())
@@ -59,9 +46,36 @@ public class Piece : MonoBehaviour
                 UpdateBoard();
             else
                 // Its not valid. revert.
-                transform.position += new Vector3(0, 0, -90);
-        }*/
+                transform.position += new Vector3(-1, 0, 0);
+        }
+        // Implement Rotate, rotates the piece 90 degrees (Key UpArrow)
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            // Modify position
+            transform.Rotate(0, 0, 90);
+
+            // See if it's valid
+            if (IsValidBoard())
+                // It's valid. Update grid.
+                UpdateBoard();
+            else
+                // Its not valid. revert.
+                transform.Rotate(0, 0, -90);
+        }
         // Implement move Downwards and Fall (each second)
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            // Modify position
+            transform.position += new Vector3(0, -1, 0);
+
+            // See if it's valid
+            if (IsValidBoard())
+                // It's valid. Update grid.
+                UpdateBoard();
+            else
+                // Its not valid. revert.
+                transform.position += new Vector3(0, 1, 0);
+        }
     }
 
     // TODO: Updates the board with the current position of the piece. 
