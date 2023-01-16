@@ -19,10 +19,14 @@ public class Board : MonoBehaviour
     // TODO: Returns true if pos (x,y) is inside the grid, false otherwise
     public static bool InsideBorder(Vector2 pos)
     {
-        Boolean isInside = false;
-        if ((pos.x >= 0 && pos.y >= 0) && (pos.x < h && pos.y < w))
+        bool isInside;
+        if ((pos.x >= 0 && pos.x < w) && (pos.y >= 0 && pos.y < h))
         {
             isInside = true;
+        }
+        else
+        {
+            isInside = false;
         }
 
         return isInside;
@@ -68,12 +72,12 @@ public class Board : MonoBehaviour
     // TODO: Return true if all cells in a row have a GameObject (are not null), false otherwise
     public static bool IsRowFull(int y)
     {
-        Boolean isFull = true;
+        bool isFull = true;
         for (int i = 0; i < w; i++)
         {
             if (grid[i, y] == null)
             {
-                return false;
+                isFull = false;
             }
         }
         return isFull;

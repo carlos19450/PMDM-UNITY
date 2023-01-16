@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    private float secondsCounter = 0;
+
+    private float secondsToCount = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +38,7 @@ public class Piece : MonoBehaviour
                 transform.position += new Vector3(1, 0, 0);
         }
         // Implement Move Right (key RightArrow)
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             // Modify position
             transform.position += new Vector3(1, 0, 0);
@@ -49,7 +52,7 @@ public class Piece : MonoBehaviour
                 transform.position += new Vector3(-1, 0, 0);
         }
         // Implement Rotate, rotates the piece 90 degrees (Key UpArrow)
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             // Modify position
             transform.Rotate(0, 0, 90);
@@ -63,7 +66,7 @@ public class Piece : MonoBehaviour
                 transform.Rotate(0, 0, -90);
         }
         // Implement move Downwards and Fall (each second)
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || (secondsCounter += Time.deltaTime) >= secondsToCount)
         {
             // Modify position
             transform.position += new Vector3(0, -1, 0);
@@ -75,6 +78,7 @@ public class Piece : MonoBehaviour
             else
                 // Its not valid. revert.
                 transform.position += new Vector3(0, 1, 0);
+            secondsCounter = 0;
         }
     }
 
@@ -82,8 +86,23 @@ public class Piece : MonoBehaviour
     void UpdateBoard()
     {
         // First you have to loop over the Board and make current positions of the piece null.
-        
+        for (int y = 0; y < Board.h; ++y)
+        {
+            for (int i = 0; i < Board.w; ++i)
+            {
+                if (Board.grid[i, y] != null)
+                {
+                    if (Board.grid[i, y].transform.parent == transform)
+                        Board.grid[i, y] = null;
+                }
+            }
+                
+        }
         // Then you have to loop over the blocks of the current piece and add them to the Board.
+        foreach (GameObject block in transform) {
+            Vector2 v = Board.RoundVector2(block.transform.position);
+            Board.grid[(int)v.x, (int)v.y] = block;
+        }  
     }
 
     // Returns if the current position of the piece makes the board valid or not
